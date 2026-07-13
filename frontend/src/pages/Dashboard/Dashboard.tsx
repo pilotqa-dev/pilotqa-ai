@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import StatCard from "../../components/common/StatCard";
+import RecentActivity from "../../components/common/RecentActivity";
 
 const Dashboard = () => {
   return (
@@ -29,6 +30,7 @@ const Dashboard = () => {
           <StatCard title="Executions" value={102} />
         </Grid>
       </Grid>
+      <RecentActivity />
     </Box>
   );
 };
