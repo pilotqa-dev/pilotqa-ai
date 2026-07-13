@@ -1,96 +1,118 @@
 import { useEffect, useState } from "react";
 import {
-  Button,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-
-import {
-  createOrganization,
   getOrganizations,
-  Organization,
+  createOrganization,
 } from "../../services/organizationService";
 
 const OrganizationPage = () => {
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [organizations, setOrganizations] = useState<any[]>([]);
 
-  const [form, setForm] = useState({
-    name: "",
-    code: "",
-    description: "",
-  });
-
-  const loadOrganizations = async () => {
-    const data = await getOrganizations();
-    setOrganizations(data);
-  };
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     loadOrganizations();
   }, []);
 
-  const handleSave = async () => {
-    await createOrganization(form);
+  const loadOrganizations = async () => {
+    try {
+      const data = await getOrganizations();
+      setOrganizations(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    setForm({
-      name: "",
-      code: "",
-      description: "",
+  const handleSave = async () => {
+    if (!name || !code) {
+      alert("Please enter Name and Code");
+      return;
+    }
+
+    await createOrganization({
+      name,
+      code,
+      description,
     });
+
+    setName("");
+    setCode("");
+    setDescription("");
 
     loadOrganizations();
   };
 
   return (
-    <Paper sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Organizations
-      </Typography>
+    <div style={{ padding: "30px" }}>
+      <h1>PilotQA AI</h1>
+      <h2>Organizations</h2>
 
-      <Stack spacing={2}>
-        <TextField
-          label="Organization Name"
-          value={form.name}
-          onChange={(e) =>
-            setForm({ ...form, name: e.target.value })
-          }
-        />
+      <hr />
 
-        <TextField
-          label="Organization Code"
-          value={form.code}
-          onChange={(e) =>
-            setForm({ ...form, code: e.target.value })
-          }
-        />
+      <input
+        placeholder="Organization Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
-        <TextField
-          label="Description"
-          value={form.description}
-          onChange={(e) =>
-            setForm({ ...form, description: e.target.value })
-          }
-        />
+      <br />
+      <br />
 
-        <Button variant="contained" onClick={handleSave}>
-          Save Organization
-        </Button>
-      </Stack>
+      <input
+        placeholder="Organization Code"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+      />
 
-      <Typography variant="h5" sx={{ mt: 5 }}>
-        Existing Organizations
-      </Typography>
+      <br />
+      <br />
 
-      {organizations.map((org) => (
-        <Paper key={org.id} sx={{ p: 2, mt: 2 }}>
-          <Typography variant="h6">{org.name}</Typography>
-          <Typography>{org.code}</Typography>
-          <Typography>{org.description}</Typography>
-        </Paper>
-      ))}
-    </Paper>
+      <input
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+
+      <br />
+      <br />
+
+      <button onClick={handleSave}>Save Organization</button>
+
+      <hr />
+
+      {organizations.length === 0 ? (
+        <p>No organizations found.</p>
+      ) : (
+        <table
+          border={1}
+          cellPadding={10}
+          cellSpacing={0}
+          style={{
+            borderCollapse: "collapse",
+            width: "100%",
+          }}
+        >
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Code</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {organizations.map((org) => (
+              <tr key={org.id}>
+                <td>{org.name}</td>
+                <td>{org.code}</td>
+                <td>{org.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
   );
 };
 
