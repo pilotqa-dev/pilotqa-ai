@@ -1,42 +1,12 @@
 import { useEffect, useState } from "react";
 import OrganizationForm from "./OrganizationForm";
 import OrganizationTable from "./OrganizationTable";
-
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
-
+import { Box, Typography } from "@mui/material";
 import {
   getOrganizations,
   createOrganization,
+  updateOrganization,
 } from "../../services/organizationService";
-
-import { DataGrid } from "@mui/x-data-grid";
-import type { GridColDef } from "@mui/x-data-grid";
-
-const columns: GridColDef[] = [
-  {
-    field: "name",
-    headerName: "Organization Name",
-    flex: 1,
-  },
-  {
-    field: "code",
-    headerName: "Code",
-    width: 150,
-  },
-  {
-    field: "description",
-    headerName: "Description",
-    flex: 2,
-  },
-];
 
 const OrganizationPage = () => {
   const [organizations, setOrganizations] = useState<any[]>([]);
@@ -44,6 +14,7 @@ const OrganizationPage = () => {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [description, setDescription] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
     loadOrganizations();
@@ -64,17 +35,33 @@ const OrganizationPage = () => {
       return;
     }
 
-    await createOrganization({
-      name,
-      code,
-      description,
-    });
+    if (editingId) {
+  await updateOrganization(editingId, {
+    name,
+    code,
+    description,
+  });
+} else {
+  await createOrganization({
+    name,
+    code,
+    description,
+  });
+}
 
     setName("");
     setCode("");
     setDescription("");
+    setEditingId(null);
 
     loadOrganizations();
+  };
+
+  const handleEdit = (organization: any) => {
+    setEditingId(organization.id);
+    setName(organization.name);
+    setCode(organization.code);
+    setDescription(organization.description || "");
   };
 
   return (
@@ -84,24 +71,24 @@ const OrganizationPage = () => {
       </Typography>
 
       <OrganizationForm
-  name={name}
-  code={code}
-  description={description}
-  setName={setName}
-  setCode={setCode}
-  setDescription={setDescription}
-  onSave={handleSave}
-/>
+        name={name}
+        code={code}
+        description={description}
+        setName={setName}
+        setCode={setCode}
+        setDescription={setDescription}
+        onSave={handleSave}
+      />
 
-      <Typography variant="h5" gutterBottom>
-  Existing Organizations
-</Typography>
+      <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+        Existing Organizations
+      </Typography>
 
-<OrganizationTable
-  organizations={organizations}
-  onEdit={(row) => console.log("Edit", row)}
-  onDelete={(id) => console.log("Delete", id)}
-/>
+      <OrganizationTable
+        organizations={organizations}
+        onEdit={handleEdit}
+        onDelete={(id) => console.log("Delete", id)}
+      />
     </Box>
   );
 };

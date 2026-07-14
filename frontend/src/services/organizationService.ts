@@ -13,3 +13,14 @@ export const createOrganization = async (organization: any) => {
 
   return response.data;
 };
+export const updateOrganization = async (
+  id: string,
+  organization: any
+) => {
+  const response = await api.put(
+    `/organizations/${id}`,
+    organization
+  );
+
+  return response.data;
+};
