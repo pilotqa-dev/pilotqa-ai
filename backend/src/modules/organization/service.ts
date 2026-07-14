@@ -37,3 +37,11 @@ export const updateOrganization = async (
 
   return organization;
 };
+
+export const deleteOrganization = async (id: string) => {
+  await prisma.organization.delete({
+    where: {
+      id,
+    },
+  });
+};

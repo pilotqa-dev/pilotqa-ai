@@ -6,6 +6,7 @@ import {
   getOrganizations,
   createOrganization,
   updateOrganization,
+  deleteOrganization,
 } from "../../services/organizationService";
 
 const OrganizationPage = () => {
@@ -58,39 +59,57 @@ const OrganizationPage = () => {
   };
 
   const handleEdit = (organization: any) => {
-    setEditingId(organization.id);
-    setName(organization.name);
-    setCode(organization.code);
-    setDescription(organization.description || "");
-  };
+  setEditingId(organization.id);
+  setName(organization.name);
+  setCode(organization.code);
+  setDescription(organization.description || "");
+};
 
-  return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Organization Management
-      </Typography>
-
-      <OrganizationForm
-        name={name}
-        code={code}
-        description={description}
-        setName={setName}
-        setCode={setCode}
-        setDescription={setDescription}
-        onSave={handleSave}
-      />
-
-      <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
-        Existing Organizations
-      </Typography>
-
-      <OrganizationTable
-        organizations={organizations}
-        onEdit={handleEdit}
-        onDelete={(id) => console.log("Delete", id)}
-      />
-    </Box>
+const handleDelete = async (id: string) => {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this organization?"
   );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    await deleteOrganization(id);
+    loadOrganizations();
+  } catch (error) {
+    console.error(error);
+    alert("Failed to delete organization.");
+  }
+};
+
+return (
+  <Box sx={{ p: 4 }}>
+    <Typography variant="h4" gutterBottom>
+      Organization Management
+    </Typography>
+
+    <OrganizationForm
+      name={name}
+      code={code}
+      description={description}
+      setName={setName}
+      setCode={setCode}
+      setDescription={setDescription}
+      onSave={handleSave}
+    />
+
+    <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+      Existing Organizations
+    </Typography>
+
+    <OrganizationTable
+      organizations={organizations}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+    />
+  </Box>
+);
 };
 
 export default OrganizationPage;

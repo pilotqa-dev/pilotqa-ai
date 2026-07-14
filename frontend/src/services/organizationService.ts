@@ -24,3 +24,7 @@ export const updateOrganization = async (
 
   return response.data;
 };
+export const deleteOrganization = async (id: string) => {
+  const response = await api.delete(`/organizations/${id}`);
+  return response.data;
+};

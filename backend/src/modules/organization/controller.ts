@@ -3,8 +3,13 @@ import {
   createOrganization,
   getOrganizations,
   updateOrganization,
+  deleteOrganization,
 } from "./service";
 import { validateCreateOrganization } from "./validation";
+interface OrganizationParams {
+  id: string;
+}
+
 
 export const createOrganizationController = async (
   req: Request,
@@ -38,16 +43,32 @@ export const getOrganizationsController = async (
   }
 };
 export const updateOrganizationController = async (
-  req: Request,
+  req: Request<OrganizationParams>,
   res: Response
 ) => {
   try {
-    const organization = await updateOrganization(
-      req.params.id,
-      req.body
-    );
+    const organization = await updateOrganization(req.params.id as string, req.body);
 
     res.json(organization);
+  } catch (error) {
+    res.status(400).json({
+      message:
+        error instanceof Error
+          ? error.message
+          : "Something went wrong",
+    });
+  }
+};
+  export const deleteOrganizationController = async (
+  req: Request<OrganizationParams>,
+  res: Response
+) => {
+  try {
+    await deleteOrganization(req.params.id as string);
+
+    res.json({
+      message: "Organization deleted successfully",
+    });
   } catch (error) {
     res.status(400).json({
       message:
