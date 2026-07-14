@@ -1,22 +1,22 @@
 import api from "./api";
+import type { Organization } from "../types/organization";
 
-export const getOrganizations = async () => {
+export const getOrganizations = async (): Promise<Organization[]> => {
   const response = await api.get("/organizations");
   return response.data;
 };
 
-export const createOrganization = async (organization: any) => {
-  const response = await api.post(
-    "/organizations",
-    organization
-  );
-
+export const createOrganization = async (
+  organization: Organization
+): Promise<Organization> => {
+  const response = await api.post("/organizations", organization);
   return response.data;
 };
+
 export const updateOrganization = async (
   id: string,
-  organization: any
-) => {
+  organization: Organization
+): Promise<Organization> => {
   const response = await api.put(
     `/organizations/${id}`,
     organization
@@ -24,7 +24,9 @@ export const updateOrganization = async (
 
   return response.data;
 };
-export const deleteOrganization = async (id: string) => {
-  const response = await api.delete(`/organizations/${id}`);
-  return response.data;
+
+export const deleteOrganization = async (
+  id: string
+): Promise<void> => {
+  await api.delete(`/organizations/${id}`);
 };
