@@ -1,8 +1,40 @@
 import { useEffect, useState } from "react";
+
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+
 import {
   getOrganizations,
   createOrganization,
 } from "../../services/organizationService";
+
+import { DataGrid } from "@mui/x-data-grid";
+import type { GridColDef } from "@mui/x-data-grid";
+
+const columns: GridColDef[] = [
+  {
+    field: "name",
+    headerName: "Organization Name",
+    flex: 1,
+  },
+  {
+    field: "code",
+    headerName: "Code",
+    width: 150,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    flex: 2,
+  },
+];
 
 const OrganizationPage = () => {
   const [organizations, setOrganizations] = useState<any[]>([]);
@@ -26,7 +58,7 @@ const OrganizationPage = () => {
 
   const handleSave = async () => {
     if (!name || !code) {
-      alert("Please enter Name and Code");
+      alert("Organization Name and Code are required.");
       return;
     }
 
@@ -44,75 +76,80 @@ const OrganizationPage = () => {
   };
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>PilotQA AI</h1>
-      <h2>Organizations</h2>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Organization Management
+      </Typography>
 
-      <hr />
+      <Card sx={{ mb: 4 }}>
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <TextField
+                fullWidth
+                label="Organization Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Grid>
 
-      <input
-        placeholder="Organization Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+            <Grid size={{ xs: 12, md: 4 }}>
+              <TextField
+                fullWidth
+                label="Organization Code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                label="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Button
+                variant="contained"
+                onClick={handleSave}
+              >
+                Save Organization
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+
+      <Typography variant="h5" gutterBottom>
+  Existing Organizations
+</Typography>
+
+<Card>
+  <CardContent>
+    <div style={{ height: 450, width: "100%" }}>
+      <DataGrid
+        rows={organizations}
+        columns={columns}
+        getRowId={(row) => row.id}
+        pageSizeOptions={[5, 10, 20]}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+              page: 0,
+            },
+          },
+        }}
       />
-
-      <br />
-      <br />
-
-      <input
-        placeholder="Organization Code"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <input
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <button onClick={handleSave}>Save Organization</button>
-
-      <hr />
-
-      {organizations.length === 0 ? (
-        <p>No organizations found.</p>
-      ) : (
-        <table
-          border={1}
-          cellPadding={10}
-          cellSpacing={0}
-          style={{
-            borderCollapse: "collapse",
-            width: "100%",
-          }}
-        >
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Code</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {organizations.map((org) => (
-              <tr key={org.id}>
-                <td>{org.name}</td>
-                <td>{org.code}</td>
-                <td>{org.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
     </div>
+  </CardContent>
+</Card>
+    </Box>
   );
 };
 
