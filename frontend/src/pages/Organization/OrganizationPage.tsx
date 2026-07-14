@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import OrganizationForm from "./OrganizationForm";
+import OrganizationTable from "./OrganizationTable";
 
 import {
   Box,
@@ -81,74 +83,25 @@ const OrganizationPage = () => {
         Organization Management
       </Typography>
 
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, md: 4 }}>
-              <TextField
-                fullWidth
-                label="Organization Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 4 }}>
-              <TextField
-                fullWidth
-                label="Organization Code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-              />
-            </Grid>
-
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </Grid>
-
-            <Grid size={{ xs: 12 }}>
-              <Button
-                variant="contained"
-                onClick={handleSave}
-              >
-                Save Organization
-              </Button>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+      <OrganizationForm
+  name={name}
+  code={code}
+  description={description}
+  setName={setName}
+  setCode={setCode}
+  setDescription={setDescription}
+  onSave={handleSave}
+/>
 
       <Typography variant="h5" gutterBottom>
   Existing Organizations
 </Typography>
 
-<Card>
-  <CardContent>
-    <div style={{ height: 450, width: "100%" }}>
-      <DataGrid
-        rows={organizations}
-        columns={columns}
-        getRowId={(row) => row.id}
-        pageSizeOptions={[5, 10, 20]}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-              page: 0,
-            },
-          },
-        }}
-      />
-    </div>
-  </CardContent>
-</Card>
+<OrganizationTable
+  organizations={organizations}
+  onEdit={(row) => console.log("Edit", row)}
+  onDelete={(id) => console.log("Delete", id)}
+/>
     </Box>
   );
 };
