@@ -20,3 +20,20 @@ export const getOrganizations = async () => {
     },
   });
 };
+export const updateOrganization = async (
+  id: string,
+  data: any
+) => {
+  const organization = await prisma.organization.update({
+    where: {
+      id,
+    },
+    data: {
+      name: data.name,
+      code: data.code,
+      description: data.description,
+    },
+  });
+
+  return organization;
+};

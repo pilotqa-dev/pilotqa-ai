@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   createOrganization,
   getOrganizations,
+  updateOrganization,
 } from "./service";
 import { validateCreateOrganization } from "./validation";
 
@@ -33,6 +34,26 @@ export const getOrganizationsController = async (
   } catch (error) {
     res.status(500).json({
       message: "Unable to fetch organizations",
+    });
+  }
+};
+export const updateOrganizationController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const organization = await updateOrganization(
+      req.params.id,
+      req.body
+    );
+
+    res.json(organization);
+  } catch (error) {
+    res.status(400).json({
+      message:
+        error instanceof Error
+          ? error.message
+          : "Something went wrong",
     });
   }
 };
