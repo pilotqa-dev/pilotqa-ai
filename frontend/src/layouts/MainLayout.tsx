@@ -1,20 +1,22 @@
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
-import Header from "../components/layout/Header";
-import Sidebar from "../components/layout/Sidebar";
+import AppHeader from "../components/layout/AppHeader";
 
 const MainLayout = () => {
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      {/* <Sidebar /> */}
+    <Box>
+      <AppHeader />
 
-      <Box sx={{ flexGrow: 1 }}>
-        <Header />
-
-        <Box sx={{ p: 3 }}>
-          <Outlet />
-        </Box>
+      <Box
+        component="main"
+        sx={{
+          mt: 16,
+          px: 3,
+          pb: 3,
+        }}
+      >
+        <Outlet />
       </Box>
     </Box>
   );

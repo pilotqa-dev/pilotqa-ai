@@ -1,7 +1,7 @@
-import TestExecutionPage from "./pages/TestExecution/TestExecutionPage";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
-  return <TestExecutionPage />;
+  return <AppRoutes />;
 }
 
 export default App;

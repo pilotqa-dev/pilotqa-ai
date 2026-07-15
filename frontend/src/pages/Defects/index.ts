@@ -1,0 +1,1 @@
+export { default as DefectPage } from "./DefectPage";
