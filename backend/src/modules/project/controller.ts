@@ -12,7 +12,9 @@ export const createProjectController = async (
   res: Response
 ) => {
   try {
-    validateCreateProject(req.body);
+  console.log(req.body);
+
+  validateCreateProject(req.body);
 
     const project = await createProject(req.body);
 

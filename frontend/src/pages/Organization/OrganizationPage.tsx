@@ -37,18 +37,18 @@ const OrganizationPage = () => {
     }
 
     if (editingId) {
-  await updateOrganization(editingId, {
-    name,
-    code,
-    description,
-  });
-} else {
-  await createOrganization({
-    name,
-    code,
-    description,
-  });
-}
+      await updateOrganization(editingId, {
+  name,
+  code,
+  description,
+});
+    } else {
+      await createOrganization({
+  name,
+  code,
+  description,
+});
+    }
 
     setName("");
     setCode("");
@@ -59,29 +59,36 @@ const OrganizationPage = () => {
   };
 
   const handleEdit = (organization: any) => {
-  setEditingId(organization.id);
-  setName(organization.name);
-  setCode(organization.code);
-  setDescription(organization.description || "");
-};
+    setEditingId(organization.id);
+    setName(organization.name);
+    setCode(organization.code);
+    setDescription(organization.description || "");
+  };
 
-const handleDelete = async (id: string) => {
-  const confirmed = window.confirm(
-    "Are you sure you want to delete this organization?"
-  );
+  const handleDelete = async (id: string) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this organization?"
+    );
 
-  if (!confirmed) {
-    return;
-  }
+    if (!confirmed) {
+      return;
+    }
 
-  try {
-    await deleteOrganization(id);
-    loadOrganizations();
-  } catch (error) {
-    console.error(error);
-    alert("Failed to delete organization.");
-  }
-};
+    try {
+      await deleteOrganization(id);
+      loadOrganizations();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete organization.");
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setName("");
+    setCode("");
+    setDescription("");
+  };
 
 return (
   <Box sx={{ p: 4 }}>
@@ -90,14 +97,16 @@ return (
     </Typography>
 
     <OrganizationForm
-      name={name}
-      code={code}
-      description={description}
-      setName={setName}
-      setCode={setCode}
-      setDescription={setDescription}
-      onSave={handleSave}
-    />
+  name={name}
+  code={code}
+  description={description}
+  setName={setName}
+  setCode={setCode}
+  setDescription={setDescription}
+  onSave={handleSave}
+  onCancel={handleCancel}
+  isEditing={editingId !== null}
+/>
 
     <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
       Existing Organizations

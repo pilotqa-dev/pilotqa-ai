@@ -1,21 +1,19 @@
 import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
+
 import Header from "../components/layout/Header";
 import Sidebar from "../components/layout/Sidebar";
 
-interface MainLayoutProps {
-  children: React.ReactNode;
-}
-
-const MainLayout = ({ children }: MainLayoutProps) => {
+const MainLayout = () => {
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
-      <Sidebar />
+      {/* <Sidebar /> */}
 
       <Box sx={{ flexGrow: 1 }}>
         <Header />
 
-        <Box sx={{ padding: 3 }}>
-          {children}
+        <Box sx={{ p: 3 }}>
+          <Outlet />
         </Box>
       </Box>
     </Box>

@@ -17,20 +17,24 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const menuItems = [
-  { text: "Dashboard", icon: <DashboardIcon /> },
-  { text: "Projects", icon: <FolderIcon /> },
-  { text: "Requirements", icon: <DescriptionIcon /> },
-  { text: "Test Cases", icon: <FactCheckIcon /> },
-  { text: "Test Execution", icon: <PlayCircleIcon /> },
-  { text: "Defects", icon: <BugReportIcon /> },
-  { text: "Reports", icon: <AssessmentIcon /> },
-  { text: "Administration", icon: <AdminPanelSettingsIcon /> },
-  { text: "Settings", icon: <SettingsIcon /> },
+  { text: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
+  { text: "Organizations", path: "/organizations", icon: <AdminPanelSettingsIcon /> },
+  { text: "Projects", path: "/projects", icon: <FolderIcon /> },
+  { text: "Requirements", path: "/requirements", icon: <DescriptionIcon /> },
+  { text: "Test Cases", path: "/testcases", icon: <FactCheckIcon /> },
+  { text: "Test Execution", path: "/executions", icon: <PlayCircleIcon /> },
+  { text: "Defects", path: "/defects", icon: <BugReportIcon /> },
+  { text: "Reports", path: "/reports", icon: <AssessmentIcon /> },
+  { text: "Settings", path: "/settings", icon: <SettingsIcon /> },
 ];
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <Box
       sx={{
@@ -56,14 +60,19 @@ const Sidebar = () => {
       <List>
         {menuItems.map((item) => (
           <ListItemButton
-            key={item.text}
-            sx={{
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: "#1E293B",
-              },
-            }}
-          >
+  key={item.text}
+  selected={location.pathname === item.path}
+  onClick={() => navigate(item.path)}
+  sx={{
+    color: "#fff",
+    "&.Mui-selected": {
+      backgroundColor: "#2563EB",
+    },
+    "&:hover": {
+      backgroundColor: "#1E293B",
+    },
+  }}
+>
             <ListItemIcon sx={{ color: "#94A3B8" }}>
               {item.icon}
             </ListItemIcon>
@@ -75,5 +84,6 @@ const Sidebar = () => {
     </Box>
   );
 };
+
 
 export default Sidebar;

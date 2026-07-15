@@ -10,6 +10,8 @@ interface Props {
   setDescription: (value: string) => void;
 
   onSave: () => void;
+  onCancel: () => void;
+  isEditing: boolean;
 }
 
 const OrganizationForm = ({
@@ -20,6 +22,8 @@ const OrganizationForm = ({
   setCode,
   setDescription,
   onSave,
+  onCancel,
+  isEditing,
 }: Props) => {
   return (
     <Card sx={{ mb: 4 }}>
@@ -54,14 +58,28 @@ const OrganizationForm = ({
             />
           </Grid>
 
-          <Grid size={{ xs: 12 }}>
-            <Button
-              variant="contained"
-              onClick={onSave}
-            >
-              Save Organization
-            </Button>
-          </Grid>
+          <Grid
+  size={{ xs: 12 }}
+  sx={{
+    display: "flex",
+    gap: 2,
+  }}
+>
+  <Button
+    variant="contained"
+    onClick={onSave}
+  >
+    {isEditing ? "Update Organization" : "Save Organization"}
+  </Button>
+
+  <Button
+    variant="outlined"
+    color="secondary"
+    onClick={onCancel}
+  >
+    {isEditing ? "Cancel" : "Reset"}
+  </Button>
+</Grid>
         </Grid>
       </CardContent>
     </Card>
