@@ -3,6 +3,8 @@ import cors from "cors";
 import projectRoutes from "./modules/project/routes";
 import organizationRoutes from "./modules/organization/routes";
 import requirementRoutes from "./modules/requirement/routes";
+import testCaseRoutes from "./modules/testcase/routes";
+import testExecutionRoutes from "./modules/testexecution/routes";
 
 const app = express();
 
@@ -12,6 +14,8 @@ app.use(express.json());
 app.use("/api/organizations", organizationRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/requirements", requirementRoutes);
+app.use("/api/testcases", testCaseRoutes);
+app.use("/api/testexecutions", testExecutionRoutes);
 
 app.get("/", (_req, res) => {
   res.json({
