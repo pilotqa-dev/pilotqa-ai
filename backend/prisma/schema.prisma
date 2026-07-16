@@ -9,10 +9,10 @@ datasource db {
 
 enum UserRole {
   SUPER_ADMIN
-  ADMIN
-  QA_MANAGER
-  QA_ENGINEER
-  DEVELOPER
+PROJECT_ADMIN
+QA_LEAD
+TESTER
+VIEWER
 }
 
 enum ProjectStatus {
@@ -90,8 +90,12 @@ model User {
   firstName String
   lastName  String
   email     String   @unique
+  phoneNumber String?
   password  String
-  role      UserRole
+  role       UserRole
+
+  isActive   Boolean  @default(true)
+  lastLogin DateTime?
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])

@@ -25,23 +25,42 @@ const AppHeader = () => {
     <AppBar position="fixed" color="primary" elevation={2}>
       {/* Header */}
       <Toolbar>
-        <Typography
-          variant="h5"
+        {/* Logo */}
+        <Box
           onClick={() => navigate("/")}
           sx={{
-            fontWeight: "bold",
+            display: "flex",
+            alignItems: "center",
             cursor: "pointer",
             mr: 4,
-            minWidth: 170,
             userSelect: "none",
-            "&:hover": {
-              opacity: 0.85,
-            },
           }}
         >
-          PilotQA AI
-        </Typography>
+          <Box
+            component="img"
+            src="/branding/logo.png"
+            alt="PilotQA AI"
+            sx={{
+              width: 38,
+              height: 38,
+              mr: 1.5,
+            }}
+          />
 
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bold",
+              "&:hover": {
+                opacity: 0.9,
+              },
+            }}
+          >
+            PilotQA AI
+          </Typography>
+        </Box>
+
+        {/* Search */}
         <TextField
           placeholder="Search or ask AI..."
           size="small"
@@ -53,10 +72,12 @@ const AppHeader = () => {
           }}
         />
 
+        {/* Notifications */}
         <IconButton color="inherit">
           <NotificationsIcon />
         </IconButton>
 
+        {/* Profile */}
         <IconButton color="inherit">
           <AccountCircleIcon />
         </IconButton>
@@ -74,13 +95,9 @@ const AppHeader = () => {
         }}
       >
         <ProjectMenu />
-
         <TestMenu />
-
         <ReportsMenu />
-
         <AIMenu />
-
         <AdminMenu />
       </Box>
     </AppBar>
