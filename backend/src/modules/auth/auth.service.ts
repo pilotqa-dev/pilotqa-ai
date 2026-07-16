@@ -2,26 +2,22 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { prisma } from "../../lib/prisma";
-import type {
+import {
   LoginRequest,
   LoginResponse,
   AuthUser,
 } from "./auth.types";
 
 const JWT_SECRET =
-  process.env.JWT_SECRET || "pilotqaai-secret";
+  process.env.JWT_SECRET || "pilotqa-ai-secret";
 
 export class AuthService {
   static async login(
     request: LoginRequest
   ): Promise<LoginResponse> {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
         email: request.email,
-      },
-      include: {
-        credential: true,
-        role: true,
       },
     });
 
@@ -32,13 +28,6 @@ export class AuthService {
       };
     }
 
-    if (!user.credential) {
-      return {
-        success: false,
-        message: "User credential not found",
-      };
-    }
-
     if (!user.isActive) {
       return {
         success: false,
@@ -46,45 +35,17 @@ export class AuthService {
       };
     }
 
-    if (user.credential.accountLocked) {
-      return {
-        success: false,
-        message: "Account is locked",
-      };
-    }
-
-    const matched = await bcrypt.compare(
+    const passwordMatched = await bcrypt.compare(
       request.password,
-      user.credential.passwordHash
+      user.password
     );
 
-    if (!matched) {
-      await prisma.credential.update({
-        where: {
-          id: user.credential.id,
-        },
-        data: {
-          failedLoginAttempts: {
-            increment: 1,
-          },
-        },
-      });
-
+    if (!passwordMatched) {
       return {
         success: false,
         message: "Invalid email or password",
       };
     }
-
-    await prisma.credential.update({
-      where: {
-        id: user.credential.id,
-      },
-      data: {
-        failedLoginAttempts: 0,
-        lastLogin: new Date(),
-      },
-    });
 
     await prisma.user.update({
       where: {
@@ -95,22 +56,12 @@ export class AuthService {
       },
     });
 
-    await prisma.auditLog.create({
-      data: {
-        userId: user.id,
-        action: "LOGIN",
-        entity: "USER",
-        entityId: user.id,
-        description: "User logged in successfully",
-      },
-    });
-
     const authUser: AuthUser = {
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      role: user.role.name,
+      role: user.role,
       organizationId: user.organizationId,
     };
 
@@ -118,7 +69,7 @@ export class AuthService {
       {
         userId: user.id,
         email: user.email,
-        role: user.role.name,
+        role: user.role,
         organizationId: user.organizationId,
       },
       JWT_SECRET,

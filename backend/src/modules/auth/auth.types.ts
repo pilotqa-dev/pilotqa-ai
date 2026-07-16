@@ -3,14 +3,6 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResponse {
-  success: boolean;
-  message: string;
-  accessToken?: string;
-  refreshToken?: string;
-  user?: AuthUser;
-}
-
 export interface AuthUser {
   id: string;
   firstName: string;
@@ -20,14 +12,9 @@ export interface AuthUser {
   organizationId: string;
 }
 
-export interface JwtPayload {
-  userId: string;
-  email: string;
-  role: string;
-  organizationId: string;
-}
-
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
+export interface LoginResponse {
+  success: boolean;
+  message: string;
+  accessToken?: string;
+  user?: AuthUser;
 }

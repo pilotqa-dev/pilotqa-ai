@@ -2,6 +2,12 @@
   "dependencies": {
     "@mui/x-data-grid": "^9.9.0",
     "axios": "^1.18.1",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
     "react-router-dom": "^7.18.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/jsonwebtoken": "^9.0.10"
   }
 }
