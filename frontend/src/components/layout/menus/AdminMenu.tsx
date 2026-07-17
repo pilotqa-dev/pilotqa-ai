@@ -40,9 +40,14 @@ const AdminMenu = () => {
           Organizations
         </MenuItem>
 
-        <MenuItem disabled>
-          Users
-        </MenuItem>
+        <MenuItem
+  onClick={() => {
+    navigate("/users");
+    handleClose();
+  }}
+>
+  Users
+</MenuItem>
 
         <MenuItem disabled>
           Roles

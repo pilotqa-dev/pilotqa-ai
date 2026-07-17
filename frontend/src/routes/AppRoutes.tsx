@@ -13,6 +13,7 @@ import TestExecutionPage from "../pages/TestExecution/TestExecutionPage";
 import DefectPage from "../pages/Defects/DefectPage";
 
 import ProtectedRoute from "../components/auth/ProtectedRoute";
+import UsersPage from "../pages/Users/UsersPage";
 
 const AppRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const AppRoutes = () => {
           <Route path="/testcases" element={<TestCasePage />} />
           <Route path="/executions" element={<TestExecutionPage />} />
           <Route path="/defects" element={<DefectPage />} />
+          <Route path="/users" element={<UsersPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
