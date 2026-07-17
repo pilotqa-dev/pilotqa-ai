@@ -5,6 +5,7 @@ import { prisma } from "../../lib/prisma";
 import {
   UserResponse,
   CreateUserRequest,
+  UpdateUserRequest,
 } from "./types";
 
 export class UserService {
@@ -57,6 +58,37 @@ export class UserService {
         role: request.role as any,
         organizationId: request.organizationId,
         isActive: true,
+      },
+    });
+
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      isActive: user.isActive,
+      organizationId: user.organizationId,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+  }
+
+  static async updateUser(
+    id: string,
+    request: UpdateUserRequest
+  ): Promise<UserResponse> {
+    const user = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        firstName: request.firstName,
+        lastName: request.lastName,
+        phoneNumber: request.phoneNumber,
+        role: request.role as any,
+        isActive: request.isActive,
       },
     });
 
