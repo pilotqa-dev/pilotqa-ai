@@ -10,6 +10,7 @@ import defectRoutes from "./modules/defect/routes";
 import dashboardRoutes from "./modules/dashboard/routes";
 
 import authRoutes from "./modules/auth";
+import userRoutes from "./modules/user/routes";
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use("/api/testcases", testCaseRoutes);
 app.use("/api/testexecutions", testExecutionRoutes);
 app.use("/api/defects", defectRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/users", userRoutes);
 
 export default app;
